@@ -1,0 +1,124 @@
+    {
+        "posts": [
+            {
+                "id": 1,
+                "input": "Test 1",
+                "output": [
+                    {
+                        "label": "age",
+                        "score": 73
+                    },
+                    {
+                        "label": "gender",
+                        "score": 61
+                    },
+                    {
+                        "label": "physical",
+                        "score": 32
+                    },
+                    {
+                        "label": "religion",
+                        "score": 20
+                    },
+                    {
+                        "label": "other",
+                        "score": 9
+                    },
+                    {
+                        "label": "race",
+                        "score": 88
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "input": "Test 2",
+                "output": [
+                    {
+                        "label": "age",
+                        "score": 94
+                    },
+                    {
+                        "label": "gender",
+                        "score": 78
+                    },
+                    {
+                        "label": "physical",
+                        "score": 56
+                    },
+                    {
+                        "label": "religion",
+                        "score": 50
+                    },
+                    {
+                        "label": "other",
+                        "score": 32
+                    },
+                    {
+                        "label": "race",
+                        "score": 88
+                    }
+                ]
+            },
+            {
+                "id": 3,
+                "input": "Test 2",
+                "output": [
+                    {
+                        "label": "age",
+                        "score": 5
+                    },
+                    {
+                        "label": "gender",
+                        "score": 66
+                    },
+                    {
+                        "label": "physical",
+                        "score": 39
+                    },
+                    {
+                        "label": "religion",
+                        "score": 57
+                    },
+                    {
+                        "label": "other",
+                        "score": 92
+                    },
+                    {
+                        "label": "race",
+                        "score": 88
+                    }
+                ]
+            },
+            {
+                "id": 4,
+                "input": "Test 3",
+                "output": [
+                    {
+                        "label": "age",
+                        "score": 22
+                    },
+                    {
+                        "label": "gender",
+                        "score": 56
+                    },
+                    {
+                        "label": "physical",
+                        "score": 66
+                    },
+                    {
+                        "label": "religion",
+                        "score": 11
+                    },
+                    {
+                        "label": "other",
+                        "score": 9
+                    },
+                    {
+                        "label": "race",
+                        "score": 88
+                    }
+                ]
+            }
+        ]
+    }
