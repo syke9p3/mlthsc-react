@@ -4,7 +4,7 @@ import { defineConfig } from "vite"
 
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: '/https://syke9p3.github.io/mlthsc-react/',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
