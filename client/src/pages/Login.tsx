@@ -33,8 +33,7 @@ const Login = () => {
     }
 
     return (
-        <div>
-
+        <div className="min-h-[80vh] grid place-items-center">
             <Card className="mx-auto max-w-sm">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl font-bold">Login</CardTitle>
@@ -65,7 +64,6 @@ const Login = () => {
                         </Button>
                     </div>
                 </CardContent>
-                <p>User: {user?.username}</p>
             </Card>
         </div>
     )
