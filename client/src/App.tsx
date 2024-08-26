@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider, ScrollRestoration } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster"
 import Home from "./pages/Home"
 import {
@@ -6,17 +6,36 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import Login from "./pages/Login";
+import Header from "./components/Header";
 
 const queryClient = new QueryClient()
+
+const Layout = () => {
+  return (
+    <div className="bg-slate-100 min-h-screen">
+      <Header />
+      <main className="py-8">
+        <Outlet />
+      </main>
+      <ScrollRestoration />
+    </div>
+  );
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/login",
-    element: <Login />
+    element: <Layout />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/login",
+        element: <Login />
+      }
+    ]
   }
 ]);
 
@@ -24,10 +43,8 @@ function App() {
   return (
 
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-screen">
-        <RouterProvider router={router} />
-        <Toaster />
-      </div>
+      <RouterProvider router={router} />
+      <Toaster />
     </QueryClientProvider>
 
   )

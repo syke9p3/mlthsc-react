@@ -1,11 +1,11 @@
-import { SavedPostData } from "@/lib/types/types";
+import { ClassificationResult } from "@/lib/types/types";
 import axios from 'axios'
 import { classify } from "./classifier";
 
 const BASE_URL = "http://localhost:8000"
 
 
-export const getSavedPosts = async (): Promise<SavedPostData[]> => {
+export const getSavedPosts = async (): Promise<ClassificationResult[]> => {
     try {
         const response = await axios.get(`${BASE_URL}/posts`)
         return response.data;

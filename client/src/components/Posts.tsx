@@ -27,7 +27,7 @@ const Posts = () => {
     console.log(posts)
 
     return (
-        <div className="my-8 mx-4 py-4 space-y-8">
+        <div className="mx-4 py-4 space-y-8">
             <Card className="border shadow-md flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                 <CardHeader>
                     <CardTitle className="flex gap-2">

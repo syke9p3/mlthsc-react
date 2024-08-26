@@ -6,23 +6,26 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { SavedPostData } from "@/lib/types/types";
+import { ClassificationResult } from "@/lib/types/types";
 import { cn } from "@/lib/utils";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 const THRESHOLD = 30;
 
-const PostCard = ({ post, isLoading }: { post: SavedPostData, isLoading?: boolean }) => {
+const PostCard = ({ post, isLoading }: { post: ClassificationResult, isLoading?: boolean }) => {
 
     console.log(post)
 
     return (
         <Card className="overflow-hidden" >
-            <CardHeader className="space-y-1" >
-                <CardTitle className="text-xl">{!isLoading ? post?.input : 'Loading...'}</CardTitle>
-                <CardDescription>{!isLoading ? post.id : ''}</CardDescription>
-            </CardHeader>
+            <div className="flex items-center bg-[#1E1E2E] text-[#EFF1F5] px-4 py-2" >
+                <CardTitle className="text-sm">{!isLoading ? post?.id : 'Loading...'}</CardTitle>
+                <button className="ml-auto">
+                    <HiOutlineDotsHorizontal />
+                </button>
+            </div>
             <CardContent className="">
+                <CardDescription className="pb-4 border-b my-4">{!isLoading ? post.input : ''}</CardDescription>
 
                 {post.output?.sort((a, b) => (b.score - a.score)).map((label, i) => (
                     <LabelBar key={i} name={label.label.toLowerCase()} score={label.score * 100} />
@@ -30,9 +33,7 @@ const PostCard = ({ post, isLoading }: { post: SavedPostData, isLoading?: boolea
 
             </CardContent>
             <CardFooter>
-                <button className="ml-auto">
-                    <HiOutlineDotsHorizontal />
-                </button>
+
             </CardFooter>
         </Card>
     )

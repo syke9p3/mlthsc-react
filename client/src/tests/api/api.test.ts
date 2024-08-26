@@ -1,5 +1,5 @@
 import { getPostCardDataById } from '@/api/api';
-import { SavedPostData } from '@/lib/types/types';
+import { ClassificationResult } from '@/lib/types/types';
 import { describe, it, expect, vi, beforeAll, expectTypeOf } from 'vitest';
 
 const BEFORE_ALL_TIMEOUT = 30000; // 30 sec

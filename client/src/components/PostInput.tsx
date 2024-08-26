@@ -11,13 +11,14 @@ import {
 import { Button } from './ui/button'
 import { Eraser, SendHorizonal } from 'lucide-react'
 
-import { SavedPostData } from '@/lib/types/types'
+import { ClassificationResult } from '@/lib/types/types'
 import { hateSpeechExamples } from '@/lib/data/examples'
 import { getClassification } from '@/api/api'
 import { useResultStore } from '@/lib/store/useResultStore'
 import { cn, isValidWordCount } from '@/lib/utils'
+import Spinner from './Spinner'
 
-const generateResult = async (input: string): Promise<SavedPostData> => {
+const generateResult = async (input: string): Promise<ClassificationResult> => {
     return {
         "id": Date.now(),
         "input": input,
@@ -40,7 +41,7 @@ const PostInput = () => {
     }, [input])
 
     useEffect(() => {
-        setValidCount(isValidWordCount(3, 280, charCount))
+        setValidCount(isValidWordCount(15, 280, charCount))
     }, [charCount])
 
 
@@ -63,8 +64,13 @@ const PostInput = () => {
 
     return (
         <div className='flex flex-col space-y-2 p-4'>
+            <div className='mb-4 space-y-1'>
+                <h2 className="text-xl font-semibold text-foreground">Input Hate Speech</h2>
+                <p className='text-muted-foreground text-sm'>The classifier accepts a text input of <b>15 - 280</b> characters.</p>
+            </div>
             <Textarea
-                placeholder='Enter hate speech'
+                className='flex-1 resize-none'
+                placeholder='Enter text here'
                 value={input}
                 onChange={(e) => {
                     setInput(e.target.value);
@@ -81,13 +87,20 @@ const PostInput = () => {
 
             <div className='grid-cols-3 space-x-2 py-4'>
                 <Button
-                    className='col-span-2 disabled:opacity-10'
+                    className='col-span-2 disabled:opacity-50'
                     disabled={isLoading}
                     onClick={() => handleSubmit(input)}
                 >
-                    <SendHorizonal className="mr-2 h-4 w-4" /> Classify
+                    {isLoading ? (
+                        <Spinner />
+                    ) :
+                        <SendHorizonal className="mr-2 h-4 w-4" />
+                    }
+
+                    Classify
+
                 </Button>
-                <Button variant={"secondary"} onClick={(e) => handleClearBtnClick(e)}>
+                <Button variant={"outline"} onClick={(e) => handleClearBtnClick(e)}>
                     <Eraser className="mr-2 h-4 w-4" /> Clear
                 </Button>
             </div>
