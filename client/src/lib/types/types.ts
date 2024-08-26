@@ -3,7 +3,7 @@ export type Label = {
     score: number
 }
 
-export type SavedPostData = {
+export type ClassificationResult = {
     id: number,
     input: string,
     output: Label[]

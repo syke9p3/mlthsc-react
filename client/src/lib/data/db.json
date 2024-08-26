@@ -1,32 +1,32 @@
     {
         "posts": [
             {
-                "id": 1,
-                "input": "Test 1",
+                "id": 13353666799,
+                "input": "A hate speech about race and age",
                 "output": [
                     {
                         "label": "age",
-                        "score": 73
+                        "score": 0.7353
                     },
                     {
                         "label": "gender",
-                        "score": 61
+                        "score": 0.031
                     },
                     {
                         "label": "physical",
-                        "score": 32
+                        "score": 0.2063
                     },
                     {
                         "label": "religion",
-                        "score": 20
+                        "score": 0.2013
                     },
                     {
-                        "label": "other",
-                        "score": 9
+                        "label": "others",
+                        "score": 0.0012
                     },
                     {
                         "label": "race",
-                        "score": 88
+                        "score": 0.8822
                     }
                 ]
             },
@@ -51,7 +51,7 @@
                         "score": 50
                     },
                     {
-                        "label": "other",
+                        "label": "others",
                         "score": 32
                     },
                     {
@@ -81,7 +81,7 @@
                         "score": 57
                     },
                     {
-                        "label": "other",
+                        "label": "others",
                         "score": 92
                     },
                     {
@@ -111,7 +111,7 @@
                         "score": 11
                     },
                     {
-                        "label": "other",
+                        "label": "others",
                         "score": 9
                     },
                     {
