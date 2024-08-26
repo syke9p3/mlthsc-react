@@ -1,5 +1,4 @@
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent } from "./ui/card"
 import LabelBadge from "./LabelBadge"
 
 const labels = ["Age", "Gender", "Race", "Physical", "Religion", "Others"]

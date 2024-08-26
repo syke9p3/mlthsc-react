@@ -1,7 +1,6 @@
 import { initialResult, useResultStore } from '@/lib/store/useResultStore'
 import { Button } from './ui/button'
 import { RotateCcw, Save } from 'lucide-react'
-import _ from 'lodash'
 import { cn } from '@/lib/utils'
 import Spinner from './Spinner'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -12,8 +11,7 @@ export default function ClassificationResults() {
 
     const { result, resetResult, isLoading } = useResultStore()
 
-    const disabledSave = (_.isEqual(initialResult, result))
-
+    const disabledSave = JSON.stringify(initialResult) === JSON.stringify(result);
 
     const handleReset = () => {
         console.log("resetting result");

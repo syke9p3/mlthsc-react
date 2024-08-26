@@ -9,7 +9,7 @@ import {
 import { Button } from "./ui/button"
 import { AvatarFallback, Avatar, AvatarImage } from "./ui/avatar"
 import { useAuthStore } from "@/lib/store/useAuthStore";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import LoginModal from "./LoginModal";
 
 

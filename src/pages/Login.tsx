@@ -23,7 +23,7 @@ const Login = () => {
         }))
     }
 
-    const { user, login } = useAuthStore();
+    const { login } = useAuthStore();
 
     const handleSubmitLogin = (form: User) => {
         /* verify form inputs */

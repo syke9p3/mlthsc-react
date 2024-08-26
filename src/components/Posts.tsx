@@ -17,7 +17,7 @@ import {
 
 const Posts = () => {
 
-    const { data: posts, isLoading, error } = useQuery(
+    const { data: posts } = useQuery(
         {
             queryKey: ['posts'],
             queryFn: getSavedPosts
@@ -31,11 +31,11 @@ const Posts = () => {
             <Card className="border shadow-md flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
                 <CardHeader>
                     <CardTitle className="flex gap-2">
-                        <h1>Saved Posts</h1>
+                        <h1>Saved Classification Results</h1>
                         <Badge variant={"outline"}>{posts?.length}</Badge>
                     </CardTitle>
                     <CardDescription>
-                        Saved posts are stored in the localstorage.
+                        Saved results are stored in the localstorage.
                     </CardDescription>
                 </CardHeader>
 
@@ -44,12 +44,12 @@ const Posts = () => {
                 >
                     <CardContent className="flex flex-col items-center gap-1 text-center">
                         <h3 className="text-2xl font-bold tracking-tight">
-                            You have no saved posts
+                            You have no saved results
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                            You can see posts as soon as you save one.
+                            Results will be added here as soon as you save one.
                         </p>
-                        <Button className="mt-4">Save a Post</Button>
+                        <Button className="mt-4" variant={'secondary'}>Save a result</Button>
                     </CardContent>
                 </div>}
 
