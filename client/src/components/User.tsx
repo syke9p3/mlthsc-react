@@ -10,6 +10,7 @@ import { Button } from "./ui/button"
 import { AvatarFallback, Avatar, AvatarImage } from "./ui/avatar"
 import { useAuthStore } from "@/lib/store/useAuthStore";
 import { Link, useNavigate } from "react-router-dom";
+import LoginModal from "./LoginModal";
 
 
 const User = () => {
@@ -60,11 +61,12 @@ const User = () => {
                     </DropdownMenu>
                 </div>
             ) : (
-                <Link to='/login'>
-                    <Button variant={'secondary'}>
-                        Login
-                    </Button>
-                </Link>
+                // <Link to='/login'>
+                //     <Button variant={'outline'}>
+                //         Login
+                //     </Button>
+                // </Link>
+                <LoginModal />
             )
 
             }

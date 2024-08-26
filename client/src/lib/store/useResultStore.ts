@@ -1,15 +1,15 @@
 import { create } from 'zustand'
-import { SavedPostData } from '../types/types'
+import { ClassificationResult } from '../types/types'
 
 type ResultStore = {
-    result: SavedPostData
-    updateResult: (newResult: SavedPostData) => void,
+    result: ClassificationResult
+    updateResult: (newResult: ClassificationResult) => void,
     resetResult: () => void
     isLoading: boolean,
     setLoading: (state: boolean) => void,
 }
 
-export const initialResult: SavedPostData = {
+export const initialResult: ClassificationResult = {
     id: 0,
     input: "-",
     output: [{

@@ -1,46 +1,114 @@
-import { useState, useEffect } from 'react'
+import { initialResult, useResultStore } from '@/lib/store/useResultStore'
+import { Button } from './ui/button'
+import { RotateCcw, Save } from 'lucide-react'
+import _ from 'lodash'
+import { cn } from '@/lib/utils'
+import Spinner from './Spinner'
+import { AnimatePresence, motion } from 'framer-motion'
 
-type ClassificationResult = {
-    label: string
-    percentage: number
-}
+const THRESHOLD = 30;
 
 export default function ClassificationResults() {
-    const [results, setResults] = useState<ClassificationResult[]>([
-        { label: "Positive", percentage: 65 },
-        { label: "Neutral", percentage: 20 },
-        { label: "Negative", percentage: 15 }
-    ])
 
-    useEffect(() => {
-        // Sort results by percentage in descending order
-        const sortedResults = [...results].sort((a, b) => b.percentage - a.percentage)
-        setResults(sortedResults)
-    }, [])
+    const { result, resetResult, isLoading } = useResultStore()
+
+    const disabledSave = (_.isEqual(initialResult, result))
+
+
+    const handleReset = () => {
+        console.log("resetting result");
+        resetResult();
+    }
 
     return (
-        <div className="w-full max-w-md p-4 bg-background rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4 text-foreground">Classification Results</h2>
-            <div className="space-y-3">
-                {results.map((result, index) => (
-                    <div key={index} className="flex flex-col">
-                        <div className="flex justify-between mb-1">
-                            <span className="text-sm font-medium text-foreground">{result.label}</span>
-                            <span className="text-sm font-medium text-foreground">{result.percentage}%</span>
-                        </div>
-                        <div className="w-full bg-muted rounded-full h-2.5">
-                            <div
-                                className="bg-primary h-2.5 rounded-full"
-                                style={{ width: `${result.percentage}%` }}
-                                role="progressbar"
-                                aria-valuenow={result.percentage}
-                                aria-valuemin={0}
-                                aria-valuemax={100}
-                            ></div>
-                        </div>
+        <div className="py-8 md:py-4 px-8">
+            <div className='mb-4 space-y-1'>
+                <h2 className="text-xl font-semibold text-foreground">Classification Results</h2>
+                {isLoading ? (
+                    <p className='text-muted-foreground text-sm flex items-center'>
+                        <Spinner className='text-muted-foreground' />
+                        Classifying hate speech...
+                    </p>
+                ) : (
+                    <p className='text-muted-foreground text-sm'>
+                        A threshold of <span className="underline decoration-dotted">30%</span> will be used  to determine if a category exists in the hate speech or not.
+                    </p>
+                )}
+            </div>
+            <div className='grid gap-8'>
+                <AnimatePresence>
+                    <div className={cn("space-y-3", { 'animate-pulse': isLoading })}>
+                        {result.output?.sort((a, b) => (b.score - a.score)).map((result) => (
+                            <motion.div
+                                key={result.label}
+                                layout
+                                initial={{ opacity: 0, y: -20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ ease: "anticipate", duration: 1 }}
+                            >
+                                <LabelResult label={result.label} score={result.score * 100} isLoading={isLoading} />
+                            </motion.div>
+                        ))}
                     </div>
-                ))}
+                </AnimatePresence>
+                <div className=''>
+                    <div className='flex gap-2 '>
+                        <Button className=""
+                            disabled={disabledSave}
+                        >
+                            <Save className="mr-2 h-4 w-4" />
+                            Save Result
+                        </Button>
+                        <Button
+                            disabled={disabledSave}
+                            className=''
+                            onClick={() => handleReset()}
+                            variant={'outline'}>
+                            <RotateCcw className="mr-2 h-4 w-4" />
+                            Reset
+                        </Button>
+                    </div>
+                </div>
             </div>
         </div>
     )
 }
+
+const LabelResult = ({ label, score, isLoading }: { label: string, score: number, isLoading: boolean }) => {
+
+    const isAboveThreshold = score > THRESHOLD;
+    const style = {
+        "--label-length": `${isAboveThreshold ? score : 10}%`,
+        "--label-color": `var(--out-${label.toLowerCase()})`
+    } as React.CSSProperties;
+
+
+    return (
+        <div className={cn("flex flex-col bg-background", {
+            'opacity-50': !isAboveThreshold
+        })}>
+            <div className="flex justify-between mb-1">
+                {/* <LabelBadge name={label} /> */}
+                <span className="text-sm font-medium text-foreground">{label}</span>
+                <span className={cn("text-sm font-medium text-foreground opacity-80")}>{(score).toFixed(2)}%</span>
+            </div>
+            <div className={cn("w-full bg-muted rounded-full h-2.5", {
+                'bg-gray-500': isLoading
+            })}>
+                <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${(score)}%` }}
+                    transition={{ ease: "easeIn", duration: 0.5 }}
+                    style={style}
+                    className={cn("h-2.5 rounded-full bg-[var(--label-color)]")}
+                    // style={{ width: `${(score)}%` }}
+                    role="progressbar"
+                    aria-valuenow={score}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                ></motion.div>
+            </div>
+        </div>
+    )
+} 
