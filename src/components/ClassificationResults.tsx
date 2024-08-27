@@ -4,6 +4,7 @@ import { RotateCcw, Save } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Spinner from './Spinner'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 
 const THRESHOLD = 30;
 
@@ -89,7 +90,10 @@ const LabelResult = ({ label, score, isLoading }: { label: string, score: number
             <div className="flex justify-between mb-1">
                 {/* <LabelBadge name={label} /> */}
                 <span className="text-sm font-medium text-foreground">{label}</span>
-                <span className={cn("text-sm font-medium text-foreground opacity-80")}>{(score).toFixed(2)}%</span>
+
+                <span className={cn("text-sm font-medium text-foreground opacity-80")}>
+                    <AnimatedNumber value={Number((score).toFixed(2))} />%
+                </span>
             </div>
             <div className={cn("w-full bg-muted rounded-full h-2.5", {
                 'bg-gray-500': isLoading
@@ -109,4 +113,19 @@ const LabelResult = ({ label, score, isLoading }: { label: string, score: number
             </div>
         </div>
     )
-} 
+}
+
+import { useSpring, useTransform } from "framer-motion";
+
+function AnimatedNumber({ value }: { value: number }) {
+    let spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 });
+    let display = useTransform(spring, (current) =>
+        current.toFixed(2)
+    );
+
+    useEffect(() => {
+        spring.set(value);
+    }, [spring, value]);
+
+    return <motion.span>{display}</motion.span>;
+}
