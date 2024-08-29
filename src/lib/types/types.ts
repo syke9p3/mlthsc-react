@@ -9,6 +9,9 @@ export type ClassificationResult = {
     output: Label[]
 }
 
+export type ClassificationResults = ClassificationResults[]
+
+
 export type validLabel =
     "Age" |
     "Gender" |

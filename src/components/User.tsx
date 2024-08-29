@@ -34,7 +34,7 @@ const User = () => {
                                 <p className="text-sm font-bold">{user.username}</p>
                                 <Button
                                     variant="outline"
-                                    size="icon"
+                                    size="sm"
                                     className="overflow-hidden rounded-full"
                                 >
                                     <Avatar>

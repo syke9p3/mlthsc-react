@@ -1,9 +1,10 @@
 import { ClassificationResult } from "@/lib/types/types";
 import axios from 'axios'
 import { classify } from "./classifier";
+// import { getLocalStorage, setLocalStorage } from "./localstorage";
 
 const BASE_URL = "http://localhost:8000"
-
+// const LOCAL_STORAGE_KEY = "saved-results"
 
 export const getSavedPosts = async (): Promise<ClassificationResult[]> => {
     try {
@@ -27,4 +28,12 @@ export const getClassification = async (input: string) => {
     }
 
 }
+
+// export const saveResultsToLocalStorage = (result: ClassificationResult) => {
+
+//     const localStorage = getLocalStorage(LOCAL_STORAGE_KEY) || '[]';
+//     setLocalStorage({key: LOCAL_STORAGE_KEY, value: 's'});
+// }
+
+
 

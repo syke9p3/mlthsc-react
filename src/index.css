@@ -83,6 +83,6 @@
   }
 
   animate {
-    @apply transition-all ease-in-out;
+    @apply transition-all duration-75 ease-in-out;
   }
 }

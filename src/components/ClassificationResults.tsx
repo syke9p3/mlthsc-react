@@ -5,32 +5,70 @@ import { cn } from '@/lib/utils'
 import Spinner from './Spinner'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect } from 'react'
+import toast from 'react-hot-toast';
+import { useSpring, useTransform } from "framer-motion";
+import { useSavedResultsStore } from '@/lib/store/useSavedResultsStore'
+import { ClassificationResult } from '@/lib/types/types'
+import { getLocalStorage } from '@/api/localstorage'
+
 
 const THRESHOLD = 30;
+const LOCALSTORAGE_KEY = "saved-results";
 
 export default function ClassificationResults() {
 
-    const { result, resetResult, isLoading } = useResultStore()
 
-    const disabledSave = JSON.stringify(initialResult) === JSON.stringify(result);
+    const { result, resetResult, isLoading } = useResultStore()
+    const { savedResults, saveResult, setResults } = useSavedResultsStore()
+
+    useEffect(() => {
+
+        const dbContents = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY) || `[]`);
+        console.log('dbContents:', dbContents)
+
+        setResults(dbContents)
+
+    }, [])
+
+    const hasBeenSaved = savedResults.some((r) => (result.id === r.id));
+    const disabledSave = JSON.stringify(initialResult) === JSON.stringify(result) || hasBeenSaved;
+
 
     const handleReset = () => {
-        console.log("resetting result");
+        console.log("Resetting result...");
         resetResult();
     }
 
+    const handleSave = (result: ClassificationResult) => {
+        try {
+            console.log("Saving results...")
+            saveResult(result);
+
+            toast.success(" Classification result has been saved.", {
+                position: "bottom-right"
+            })
+        } catch (e) {
+            console.log("Saving error: ", e);
+        }
+    }
+
+
+    useEffect(() => {
+        resetResult();
+    }, [])
+
     return (
-        <div className="py-8 md:py-4 px-8">
+        <div className="py-8 md:py-4 md:px-8" id="classifier">
             <div className='mb-4 space-y-1'>
-                <h2 className="text-xl font-semibold text-foreground">Classification Results</h2>
+                <h2 className="text-xl font-semibold text-foreground">{isLoading ? 'Classifying Hate Speech...' : 'Classification Results'}</h2>
                 {isLoading ? (
                     <p className='text-muted-foreground text-sm flex items-center'>
                         <Spinner className='text-muted-foreground' />
-                        Classifying hate speech...
+                        This will only load once...
                     </p>
                 ) : (
                     <p className='text-muted-foreground text-sm'>
-                        A threshold of <span className="underline decoration-dotted">30%</span> will be used  to determine if a category exists in the hate speech or not.
+                        A threshold of <span className="underline decoration-dotted">30%</span> will be used  to determine if a hate speech category exists or not.
                     </p>
                 )}
             </div>
@@ -55,6 +93,7 @@ export default function ClassificationResults() {
                     <div className='flex gap-2 '>
                         <Button className=""
                             disabled={disabledSave}
+                            onClick={() => handleSave(result)}
                         >
                             <Save className="mr-2 h-4 w-4" />
                             Save Result
@@ -68,6 +107,10 @@ export default function ClassificationResults() {
                             Reset
                         </Button>
                     </div>
+                    {/* <p className={cn('animate duration-75 flex items-center gap-2 text-muted-foreground text-sm pt-2', {
+                        'opacity-0  -translate-x-10': !hasBeenSaved,
+                        'opacity-100 translate-x-0': hasBeenSaved
+                    })}><FcCheckmark /> Item has been saved</p> */}
                 </div>
             </div>
         </div>
@@ -115,7 +158,7 @@ const LabelResult = ({ label, score, isLoading }: { label: string, score: number
     )
 }
 
-import { useSpring, useTransform } from "framer-motion";
+
 
 function AnimatedNumber({ value }: { value: number }) {
     let spring = useSpring(value, { mass: 0.8, stiffness: 75, damping: 15 });

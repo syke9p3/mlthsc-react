@@ -29,8 +29,9 @@ const generateResult = async (input: string): Promise<ClassificationResult> => {
 const PostInput = () => {
 
     const [input, setInput] = useState("");
+    const [prevInput, setPrevInput] = useState('')
     const [charCount, setCharCount] = useState(0);
-    const [validCount, setValidCount] = useState(false);
+    const [isValidCount, setValidCount] = useState(false);
 
     const updateResult = useResultStore((state) => state.updateResult)
     const setLoading = useResultStore((state) => state.setLoading)
@@ -45,12 +46,13 @@ const PostInput = () => {
     }, [charCount])
 
 
-    const handleSubmit = async (input: string) => {
+    const handleClassify = async (input: string) => {
 
         try {
             setLoading(true);
             updateResult(await generateResult(input));
             setLoading(false);
+            setPrevInput(input);
         } catch (e) {
             setLoading(false);
             console.log("post input error: ", e)
@@ -62,8 +64,10 @@ const PostInput = () => {
         setInput("");
     }
 
+    const disabledClassify: boolean = isLoading || !isValidCount || prevInput === input;
+
     return (
-        <div className='flex flex-col space-y-2 p-4'>
+        <div className='flex flex-col space-y-2 py-4 md:px-4'>
             <div className='mb-4 space-y-1'>
                 <h2 className="text-xl font-semibold text-foreground">Input Hate Speech</h2>
                 <p className='text-muted-foreground text-sm'>The classifier accepts a text input of <b>15 - 280</b> characters.</p>
@@ -78,18 +82,18 @@ const PostInput = () => {
             />
             <div className='flex items-center'>
                 <ExampleSelector setInput={setInput} />
-                <span className={cn('ml-auto', {
-                    'hidden': charCount === 0,
-                    'text-gray-800': validCount,
-                    'text-red-500': !validCount,
+                <span className={cn('ml-auto text-right', {
+                    'text-muted-foreground': isValidCount,
+                    'text-red-500': !isValidCount,
+                    'text-muted-foreground ': charCount === 0,
                 })}>{charCount} / 280</span>
             </div>
 
             <div className='grid-cols-3 space-x-2 py-4'>
                 <Button
                     className='col-span-2 disabled:opacity-50'
-                    disabled={isLoading}
-                    onClick={() => handleSubmit(input)}
+                    disabled={disabledClassify}
+                    onClick={() => handleClassify(input)}
                 >
                     {isLoading ? (
                         <Spinner />
@@ -98,7 +102,6 @@ const PostInput = () => {
                     }
 
                     Classify
-
                 </Button>
                 <Button variant={"outline"} onClick={(e) => handleClearBtnClick(e)}>
                     <Eraser className="mr-2 h-4 w-4" /> Clear

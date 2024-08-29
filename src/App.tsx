@@ -1,5 +1,5 @@
 import { createBrowserRouter, Outlet, RouterProvider, ScrollRestoration } from "react-router-dom";
-import { Toaster } from "./components/ui/toaster"
+import { Toaster } from "react-hot-toast"
 import Home from "./pages/Home"
 import {
   QueryClient,
@@ -8,7 +8,7 @@ import {
 import Login from "./pages/Login";
 import Header from "./components/Header";
 import NotFound from "./pages/NotFound";
-import SideNav from "./components/SideNav";
+import SiteFooter from "./components/Footer";
 
 const queryClient = new QueryClient()
 
@@ -16,12 +16,14 @@ const Layout = () => {
   return (
     <div className="bg-slate-100 min-h-screen">
       <Header />
-      <div className="py-8 grid lg:grid-cols-12 max-w-[1366px] mx-auto ">
-        <SideNav />
-        <main className="lg:col-span-10" >
+      <div className="py-8 grid lg:grid-cols-12 max-w-[1366px] mx-auto min-h-screen">
+        {/* <SideNav /> */}
+        {/* <main className="" > */}
+        <main className="lg:col-span-12" >
           <Outlet />
         </main>
       </div>
+      <SiteFooter />
       <ScrollRestoration />
     </div>
   );

@@ -5,36 +5,63 @@ import {
     CardFooter,
     CardTitle,
 } from "@/components/ui/card"
+import { useSavedResultsStore } from "@/lib/store/useSavedResultsStore";
 import { ClassificationResult } from "@/lib/types/types";
 import { cn } from "@/lib/utils";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { motion } from "framer-motion";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./ui/dropdown-menu";
+
 
 const THRESHOLD = 30;
 
 const PostCard = ({ post, isLoading }: { post: ClassificationResult, isLoading?: boolean }) => {
 
+    const { deleteResult } = useSavedResultsStore()
+
     console.log(post)
 
     return (
-        <Card className="overflow-hidden" >
-            <div className="flex items-center bg-[#1E1E2E] text-[#EFF1F5] px-4 py-2" >
-                <CardTitle className="text-sm">{!isLoading ? post?.id : 'Loading...'}</CardTitle>
-                <button className="ml-auto">
-                    <HiOutlineDotsHorizontal />
-                </button>
-            </div>
-            <CardContent className="">
-                <CardDescription className="pb-4 border-b my-4">{!isLoading ? post.input : ''}</CardDescription>
+        <motion.div
+            layout="position"
+            initial={{ opacity: 0, y: 100, }}
+            animate={{ opacity: 100, y: 0, }}
+            exit={{ opacity: 0, y: -100, }}
+            transition={{
+                layout: { duration: 0.5, ease: "easeInOut" }, // Transition for layout changes
+                opacity: { duration: 0.5, ease: "easeOut" },     // Transition for opacity changes
+                y: { duration: 0.7, ease: "easeOut" },        // Transition for y-axis changes
+                x: { duration: 0.7, ease: "easeOut" },        // Transition for x-axis changes
+            }}
+        >
+            <Card className="overflow-hidden bg-background" >
+                <div className="flex items-center bg-[#1E1E2E] text-[#EFF1F5] px-4 py-2" >
+                    <CardTitle className="text-sm">{!isLoading ? post?.id : 'Loading...'}</CardTitle>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <button className="ml-auto"
+                            >
+                                <HiOutlineDotsHorizontal />
+                            </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                            <DropdownMenuItem onClick={() => deleteResult(post.id)}>Delete</DropdownMenuItem>
+                            {/* <DropdownMenuItem onClick={() => handleLogout()}>Logout</DropdownMenuItem> */}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
-                {post.output?.sort((a, b) => (b.score - a.score)).map((label, i) => (
-                    <LabelBar key={i} name={label.label.toLowerCase()} score={label.score * 100} />
-                ))}
+                </div>
+                <CardContent className="">
+                    <CardDescription className="pb-4 border-b my-4">{!isLoading ? post.input : ''}</CardDescription>
+                    {post.output?.sort((a, b) => (b.score - a.score)).map((label, i) => (
+                        <LabelBar key={i} name={label.label.toLowerCase()} score={label.score * 100} />
+                    ))}
+                </CardContent>
+                <CardFooter>
+                </CardFooter>
+            </Card>
+        </motion.div>
 
-            </CardContent>
-            <CardFooter>
-
-            </CardFooter>
-        </Card>
     )
 }
 
