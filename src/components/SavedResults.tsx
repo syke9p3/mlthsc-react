@@ -22,8 +22,6 @@ const SavedResults = () => {
 
     const handleClear = () => {
         clearSavedResults()
-        // delete from localstorage
-        // 
     }
 
     console.log(savedResults)

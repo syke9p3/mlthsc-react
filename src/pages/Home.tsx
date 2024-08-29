@@ -1,16 +1,12 @@
-import { getLocalStorage } from "@/api/localstorage"
 import Banner from "@/components/Banner"
 import ClassificationResults from "@/components/ClassificationResults"
 import PostInput from "@/components/PostInput"
 import SavedResults from "@/components/SavedResults"
-// import Posts from "@/components/Posts"
 import { Card, CardContent } from "@/components/ui/card"
 import { AnimatePresence } from "framer-motion"
 
 
 const Home = () => {
-
-    console.log(getLocalStorage('saved-items'))
 
     return (
         <div className="space-y-8">

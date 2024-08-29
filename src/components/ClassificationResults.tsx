@@ -10,23 +10,19 @@ import { useSpring, useTransform } from "framer-motion";
 import { useSavedResultsStore } from '@/lib/store/useSavedResultsStore'
 import { ClassificationResult } from '@/lib/types/types'
 import { getLocalStorage } from '@/api/localstorage'
+import { LOCALSTORAGE_KEY, THRESHOLD } from '@/lib/constants/constants'
 
-
-const THRESHOLD = 30;
-const LOCALSTORAGE_KEY = "saved-results";
 
 export default function ClassificationResults() {
 
 
     const { result, resetResult, isLoading } = useResultStore()
-    const { savedResults, saveResult, setResults } = useSavedResultsStore()
+    const { savedResults, saveResult } = useSavedResultsStore()
 
     useEffect(() => {
 
         const dbContents = JSON.parse(getLocalStorage(LOCALSTORAGE_KEY) || `[]`);
         console.log('dbContents:', dbContents)
-
-        setResults(dbContents)
 
     }, [])
 

@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { ClassificationResult } from '../types/types'
+import { getSavedResults_LS, setSavedResults_LS } from '@/api/localstorage'
 
 type SavedResults = {
     savedResults: ClassificationResult[],
@@ -11,20 +12,30 @@ type SavedResults = {
     setLoading: (state: boolean) => void,
 }
 
+const initialResults = getSavedResults_LS()
+
 export const useSavedResultsStore = create<SavedResults>()((set) => ({
-    savedResults: [],
-    setResults: (results) => set({ savedResults: results }),
+    savedResults: initialResults,
+    setResults: (results) => {
+
+        setSavedResults_LS(results)
+        return set({ savedResults: results })
+    },
     clearSavedResults: () => set({ savedResults: [] }),
     saveResult: (newResult) => set((state) => {
 
         const newResults = state.savedResults;
         newResults.unshift(newResult)
+
+        setSavedResults_LS(newResults)
         return { savedResults: newResults }
 
     }),
     deleteResult: (id) => set((state) => {
 
         const newResults = state.savedResults.filter((result) => (result.id !== id))
+
+        setSavedResults_LS(newResults)
         return { savedResults: newResults }
 
     }),
