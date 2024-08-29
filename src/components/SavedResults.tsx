@@ -12,8 +12,10 @@ import { CardDescription, CardTitle } from "./ui/card"
 //     PaginationPrevious,
 // } from "@/components/ui/pagination"
 import { useSavedResultsStore } from "@/lib/store/useSavedResultsStore"
-import { Trash, Trash2, TriangleAlert } from "lucide-react"
+import { ChevronDown, Share, Trash2, TriangleAlert } from "lucide-react"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import exportResults from "@/lib/utils/export"
 
 
 const SavedResults = () => {
@@ -25,6 +27,13 @@ const SavedResults = () => {
     }
 
     console.log(savedResults)
+
+    const handleExport = (filetype: string) => {
+        exportResults({
+            results: savedResults,
+            filetype: filetype
+        })
+    }
 
     return (
         <div className="mx-4 py-4 space-y-8" id='saved-results'>
@@ -38,28 +47,23 @@ const SavedResults = () => {
                     </CardDescription>
                 </div>
 
-                <motion.div layout="size" >
+                <div className="min-h-[628px]">
                     {savedResults.length === 0 ? (
-                        <motion.div
-                            className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm min-h-[25dvh]" x-chunk="dashboard-02-chunk-1"
-                        >
-                            <div className="flex flex-col items-center gap-1 text-center">
-                                <p className="text-2xl font-bold tracking-tight">
-                                    You have no saved results
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                    Results will be added here as soon as you save one.
-                                </p>
-                                <Button className="mt-4" variant={'secondary'}><a href="#results">Save a result</a></Button>
-                            </div>
-                        </motion.div>
+                        <div className="flex flex-col items-center gap-1 text-center">
+                            <p className="text-2xl font-bold tracking-tight">
+                                You have no saved results
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                                Results will be added here as soon as you save one.
+                            </p>
+                            <Button className="mt-4" variant={'secondary'}><a href="#results">Save a result</a></Button>
+                        </div>
                     ) : (
                         <AnimatePresence>
                             <div className="px-4 pb-4 border-b flex gap-2 justify-end">
-                                {/* <Button variant={"outline"} className="px-3"><EllipsisVertical size={16} /></Button> */}
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <Button variant={"outline"} className="px-3 hover:text-white hover:bg-red-500"><Trash size={16} className="mr-2" /> Delete All</Button>
+                                        <Button variant={"outline"} className="px-3 hover:text-white hover:bg-red-500"><Trash2 size={16} className="mr-2" /> Delete All</Button>
                                     </DialogTrigger>
                                     <DialogContent className="sm:max-w-[425px]">
                                         <DialogHeader>
@@ -81,10 +85,22 @@ const SavedResults = () => {
                                             </DialogClose >
                                             <Button
                                                 onClick={() => handleClear()}
-                                                className="px-3 text-white bg-red-600 hover:bg-red-700 flex items-center gap-2"><Trash2 size={16}></Trash2> Delete</Button>
+                                                className="px-3 text-white bg-red-600 hover:bg-red-700 flex items-center gap-2"><Trash2 size={16} /> Delete</Button>
                                         </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        {/* <Button variant={"outline"} className="px-3"><EllipsisVertical size={16} /></Button> */}
+                                        <Button variant={"outline"} className="flex items-center gap-2"> <Share size={16} /> Export <ChevronDown size={16} className="translate-y-[2px]" /> </Button>
+
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => handleExport("json")}>JSON</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => handleExport("csv")}>CSV</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+
                             </div>
                             <motion.div
                                 className="px-4 py-8 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"
@@ -97,7 +113,7 @@ const SavedResults = () => {
                         </AnimatePresence>
                     )
                     }
-                </motion.div>
+                </div>
 
 
 

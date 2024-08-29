@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { motion } from "framer-motion";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./ui/dropdown-menu";
+import { Trash } from "lucide-react";
 
 
 const THRESHOLD = 30;
@@ -45,8 +46,7 @@ const PostCard = ({ post, isLoading }: { post: ClassificationResult, isLoading?:
                             </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start">
-                            <DropdownMenuItem onClick={() => deleteResult(post.id)}>Delete</DropdownMenuItem>
-                            {/* <DropdownMenuItem onClick={() => handleLogout()}>Logout</DropdownMenuItem> */}
+                            <DropdownMenuItem onClick={() => deleteResult(post.id)} ><Trash size={16} className="mr-2" />Delete</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
